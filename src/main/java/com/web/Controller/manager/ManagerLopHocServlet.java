@@ -19,8 +19,6 @@ import java.text.SimpleDateFormat;
 @WebServlet(urlPatterns = "/managerLopHoc")
 public class ManagerLopHocServlet extends HttpServlet {
     LopHocService lopHocService = new LopHocService();
-    GiaSuService giaSuService = new GiaSuService();
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
@@ -63,20 +61,30 @@ public class ManagerLopHocServlet extends HttpServlet {
                 action = "";
             }
             String id = req.getParameter("id");
+            String hour = req.getParameter("hour");
             String name = req.getParameter("name");
+            String usernameHS = req.getParameter("usernameHS");
             String date = req.getParameter("date");
-            float price = Float.parseFloat(req.getParameter("price"));
+            String img = req.getParameter("img");
+            int price = Integer.parseInt(req.getParameter("price"));
+            int priceGS = Integer.parseInt(req.getParameter("priceGS"));
             String content = req.getParameter("content");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            LopHoc lopHoc;
+            int idLH = 0;
+            if (id != null) {
+                idLH = Integer.parseInt(id);
+                lopHoc = new LopHoc(idLH, usernameHS, account.getUsername(), name, hour, dateFormat.parse(date), price, priceGS, content, img);
+            } else {
+                lopHoc = new LopHoc(account.getUsername(), name, hour, dateFormat.parse(date), price, priceGS, content, img);
+            }
 
-            LopHoc lopHoc = new LopHoc(id, name, dateFormat.parse(date), price, content, giaSuService.getGiaSuByUserName(account.getUsername()));
+
             switch (action) {
                 case "create":
                     lopHocService.insertlopHoc(lopHoc);
                     break;
                 case "edit":
-                    LopHoc lopHoc1 = lopHocService.getlopHocById(id);
-                    lopHoc.setGiaSu(lopHoc1.getGiaSu());
                     lopHocService.updatelopHoc(lopHoc);
                     break;
             }
@@ -89,19 +97,14 @@ public class ManagerLopHocServlet extends HttpServlet {
 
     public void showLopHoc(HttpServletRequest req, HttpServletResponse resp, Account account) {
         try {
-
-            String lever = req.getParameter("lever");
-            if (lever == null) {
-                lever = "1";
-            }
             req.setAttribute("account", account);
-            if (account.getPosition().equals("admin")) {
-                req.setAttribute("lopHocs", lopHocService.getAlllopHocsByLeverAdmin(lever));
+            if (account.getRole().equals("admin")) {
+                req.setAttribute("lopHocs", lopHocService.getAlllopHocs());
                 RequestDispatcher dispatcher = req.getRequestDispatcher("/lopHoc/show.jsp");
                 dispatcher.forward(req, resp);
             } else {
-                if (account.getPosition().equals("gv")) {
-                    req.setAttribute("lopHocs", lopHocService.getAlllopHocsByLeverGS(lever, giaSuService.getGiaSuByUserName(account.getUsername()).getIdGS()));
+                if (account.getRole().equals("gv")) {
+                    req.setAttribute("lopHocs", lopHocService.getlopHocByUsernameGS(account.getUsername()));
                     RequestDispatcher dispatcher = req.getRequestDispatcher("/lopHoc/show.jsp");
                     dispatcher.forward(req, resp);
                 }

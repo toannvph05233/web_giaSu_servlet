@@ -10,7 +10,7 @@ public class GiaSuService {
     GiaSuDAO giaSuDAO = new GiaSuDAO();
     public void insertGiaSu(GiaSu giaSu) {
         try {
-            giaSuDAO.insert(giaSu);
+            giaSuDAO.create(giaSu);
             System.out.println("Thêm thành công!");
         } catch (SQLException e) {
             System.out.println("Lỗi khi thêm: " + e.getMessage());
@@ -19,7 +19,7 @@ public class GiaSuService {
 
     public GiaSu getGiaSuById(String idGS) {
         try {
-            GiaSu GiaSu = giaSuDAO.getById(idGS);
+            GiaSu GiaSu = giaSuDAO.getById(Integer.parseInt(idGS));
             if (GiaSu != null) {
                 return GiaSu;
             } else {
@@ -33,7 +33,7 @@ public class GiaSuService {
 
     public GiaSu getGiaSuByUserName(String username) {
         try {
-            GiaSu GiaSu = giaSuDAO.getByUserName(username);
+            GiaSu GiaSu = giaSuDAO.getGiaSuByUsername(username);
             if (GiaSu != null) {
                 return GiaSu;
             } else {
@@ -55,16 +55,14 @@ public class GiaSuService {
         }
         return null;
     }
-    public List<GiaSu> getGiaSusByLever(int lever) {
-        try {
-            List<GiaSu> giaSus = giaSuDAO.getAllByLever(lever);
-            return giaSus;
-        } catch (SQLException e) {
-            System.out.println("Lỗi khi truy vấn danh sách : " + e.getMessage());
-        }
-        return null;
-    }
 
+    public int countHocSinhByGiaSuUsername(String username) {
+        try {
+            return giaSuDAO.countHocSinhByGiaSuUsername(username);
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
     public void updateGiaSu(GiaSu GiaSu) {
         try {
             giaSuDAO.update(GiaSu);
@@ -74,12 +72,14 @@ public class GiaSuService {
         }
     }
 
-//    public void deleteGiaSu(String idGS) {
-//        try {
-//            giaSuDAO.(idHS);
-//            System.out.println("Xóa học sinh thành công!");
-//        } catch (SQLException e) {
-//            System.out.println("Lỗi khi xóa học sinh: " + e.getMessage());
-//        }
-//    }
+    public void deleteGiaSu(String idGS) {
+        try {
+            giaSuDAO.delete(Integer.parseInt(idGS));
+            System.out.println("Xóa GS thành công!");
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi xóa GS: " + e.getMessage());
+        }
+    }
+
+
 }

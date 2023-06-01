@@ -125,21 +125,26 @@
 </head>
 <body>
 <div class="container emp-profile">
-    <h1>Create Lớp Học.</h1>
-    <form method="post" action="/managerLopHoc?action=create">
-<%--        <input placeholder="id" name="id"><br>--%>
-        <input placeholder="name" name="name"><br>
-        <input placeholder="hour" type="number" name="hour"><br>
-        <input placeholder="date" name="date" type="date"><br>
-        <input placeholder="price" name="price" type="number"><br>
-        <input placeholder="priceGS" name="priceGS" type="number"><br>
-        <input placeholder="content" name="content"><br>
-        <input placeholder="img" name="img"><br>
-        <button type="submit" class="btn btn-success">Submit</button>
-    </form>
+    <h1>Danh sách tất cả lớp học</h1>
+    <div class="row">
+        <c:forEach var="lh" items="${lopHocs}">
+            <div class="col 3 table_thpt_item" align="center">
+                <img src="https://img6.thuthuatphanmem.vn/uploads/2022/02/13/hinh-anh-lop-hoc-dep-nhat_011959587.jpg"
+                     alt="" width="200" height="160">
+                <br>
+                <hr>
+                <button class="btn btn-success">${lh.tenLopHoc}</button>
+                <p>${lh.ngayHoc} - ${lh.hocPhi}$</p>
+                <p>${lh.moTa}</p>
+                <hr>
+            </div>
+        </c:forEach>
 
+    </div>
 </div>
 
 </body>
 </html>
+<script>
 
+</script>

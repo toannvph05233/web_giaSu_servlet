@@ -10,165 +10,139 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.sql.Statement;
 
 public class LopHocDAO extends DBconnect{
-    GiaSuDAO giaSuDAO= new GiaSuDAO();
+    public void create(LopHoc lopHoc) throws SQLException {
+        String query = "INSERT INTO LopHoc (username_hoc_sinh, username_gia_su, ten_lop_hoc, gio_hoc, ngay_hoc, hoc_phi, phi_gia_su, mo_ta, hinh_anh) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+        try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, lopHoc.getUsernameHocSinh());
+            statement.setString(2, lopHoc.getUsernameGiaSu());
+            statement.setString(3, lopHoc.getTenLopHoc());
+            statement.setString(4, lopHoc.getGioHoc());
+            statement.setDate(5, new java.sql.Date(lopHoc.getNgayHoc().getTime()));
+            statement.setInt(6, lopHoc.getHocPhi());
+            statement.setInt(7, lopHoc.getPhiGiaSu());
+            statement.setString(8, lopHoc.getMoTa());
+            statement.setString(9, lopHoc.getHinhAnh());
 
+            statement.executeUpdate();
 
-    public void insert(LopHoc lopHoc) throws SQLException {
-        String query = "INSERT INTO lophoc (idLH, tenLH, lichhoc, hocphi, mota, idGS) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, lopHoc.getIdLH());
-        statement.setString(2, lopHoc.getTenLH());
-        statement.setDate(3, new java.sql.Date(lopHoc.getLichhoc().getTime()));
-        statement.setFloat(4, lopHoc.getHocphi());
-        statement.setString(5, lopHoc.getMota());
-        statement.setString(6, lopHoc.getGiaSu().getIdGS());
-        statement.executeUpdate();
-    }
-
-    public LopHoc getById(String idLH) throws SQLException {
-        String query = "SELECT * FROM lophoc WHERE idLH = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, idLH);
-        ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            String tenLH = resultSet.getString("tenLH");
-            Date lichhoc = resultSet.getDate("lichhoc");
-            float hocphi = resultSet.getFloat("hocphi");
-            String mota = resultSet.getString("mota");
-            String idGS = resultSet.getString("idGS");
-            GiaSu giaSu = giaSuDAO.getById(idGS); // Assume you have a method to fetch GiaSu object by id
-            return new LopHoc(idLH, tenLH, lichhoc, hocphi, mota, giaSu);
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int generatedId = generatedKeys.getInt(1);
+                lopHoc.setId(generatedId);
+            }
         }
-        return null;
-    }
-    public int countLopByGS(String idGS) throws SQLException {
-        String query = "SELECT count(idLH) as sl FROM web_gia_su.lophoc where idGS = ? group by idGS";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, idGS);
-        ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getInt("sl");
-
-        }
-        return 0;
-    }
-
-    public List<LopHoc> getByIdGS(String idGS) throws SQLException {
-        String query = "SELECT * FROM lophoc WHERE idGS = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, idGS);
-        ResultSet resultSet = statement.executeQuery();
-        List<LopHoc> lopHocs = new ArrayList<>();
-        while (resultSet.next()) {
-            String tenLH = resultSet.getString("tenLH");
-            String idLH = resultSet.getString("idLH");
-            Date lichhoc = resultSet.getDate("lichhoc");
-            float hocphi = resultSet.getFloat("hocphi");
-            String mota = resultSet.getString("mota");
-            String idGS1 = resultSet.getString("idGS");
-            GiaSu giaSu = giaSuDAO.getById(idGS); // Assume you have a method to fetch GiaSu object by id
-            LopHoc lopHoc = new LopHoc(idLH, tenLH, lichhoc, hocphi, mota, giaSu);
-            lopHocs.add(lopHoc);
-        }
-        return lopHocs;
-    }
-
-    public List<LopHoc> getByLeverAdmin(String lever) throws SQLException {
-        String query = "SELECT * FROM lophoc WHERE idGS IN (SELECT idGS FROM monhoc join giasu on giasu.idMH = monhoc.idMH WHERE lever = ?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, lever);
-        ResultSet resultSet = statement.executeQuery();
-        List<LopHoc> lopHocs = new ArrayList<>();
-        while (resultSet.next()) {
-            String tenLH = resultSet.getString("tenLH");
-            String idGS = resultSet.getString("idGS");
-            String idLH = resultSet.getString("idLH");
-            Date lichhoc = resultSet.getDate("lichhoc");
-            float hocphi = resultSet.getFloat("hocphi");
-            String mota = resultSet.getString("mota");
-            GiaSu giaSu = giaSuDAO.getById(idGS);
-            LopHoc lopHoc = new LopHoc(idLH, tenLH, lichhoc, hocphi, mota, giaSu);
-            lopHocs.add(lopHoc);
-        }
-        return lopHocs;
-    }
-    public List<LopHoc> getByLeverAndGS(String lever, String idGS) throws SQLException {
-        String query = "SELECT * FROM lophoc WHERE idGS IN (SELECT idGS FROM monhoc join giasu on giasu.idMH = monhoc.idMH WHERE lever = ? and idGS = ?)";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, lever);
-        statement.setString(2, idGS);
-        ResultSet resultSet = statement.executeQuery();
-        List<LopHoc> lopHocs = new ArrayList<>();
-        while (resultSet.next()) {
-            String tenLH = resultSet.getString("tenLH");
-            String idLH = resultSet.getString("idLH");
-            Date lichhoc = resultSet.getDate("lichhoc");
-            float hocphi = resultSet.getFloat("hocphi");
-            String mota = resultSet.getString("mota");
-            GiaSu giaSu = giaSuDAO.getById(idGS);
-            LopHoc lopHoc = new LopHoc(idLH, tenLH, lichhoc, hocphi, mota, giaSu);
-            lopHocs.add(lopHoc);
-        }
-        return lopHocs;
-    }
-
-    public List<LopHoc> getByUserNameHS(String username) throws SQLException {
-        String query = "SELECT lophoc.* FROM web_gia_su.lophoc join dangky on dangky.idLH = lophoc.idLH join hocsinh on hocsinh.idHS = dangky.idHS where username = ?;";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, username);
-        ResultSet resultSet = statement.executeQuery();
-        List<LopHoc> lopHocs = new ArrayList<>();
-        while (resultSet.next()) {
-            String tenLH = resultSet.getString("tenLH");
-            String idLH = resultSet.getString("idLH");
-            Date lichhoc = resultSet.getDate("lichhoc");
-            float hocphi = resultSet.getFloat("hocphi");
-            String mota = resultSet.getString("mota");
-            String idGS1 = resultSet.getString("idGS");
-            GiaSu giaSu = giaSuDAO.getById(idGS1); // Assume you have a method to fetch GiaSu object by id
-            LopHoc lopHoc = new LopHoc(idLH, tenLH, lichhoc, hocphi, mota, giaSu);
-            lopHocs.add(lopHoc);
-        }
-        return lopHocs;
-    }
-
-    public List<LopHoc> getAll() throws SQLException {
-        String query = "SELECT * FROM lophoc";
-        PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
-        List<LopHoc> lopHocs = new ArrayList<>();
-        while (resultSet.next()) {
-            String idLH = resultSet.getString("idLH");
-            String tenLH = resultSet.getString("tenLH");
-            Date lichhoc = resultSet.getDate("lichhoc");
-            float hocphi = resultSet.getFloat("hocphi");
-            String mota = resultSet.getString("mota");
-            String idGS = resultSet.getString("idGS");
-            GiaSu giaSu = giaSuDAO.getById(idGS); // Assume you have a method to fetch GiaSu object by id
-            LopHoc lopHoc = new LopHoc(idLH, tenLH, lichhoc, hocphi, mota, giaSu);
-            lopHocs.add(lopHoc);
-        }
-        return lopHocs;
     }
 
     public void update(LopHoc lopHoc) throws SQLException {
-        String query = "UPDATE lophoc SET tenLH = ?, lichhoc = ?, hocphi = ?, mota = ?, idGS = ? WHERE idLH = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(6, lopHoc.getIdLH());
-        statement.setString(1, lopHoc.getTenLH());
-        statement.setDate(2, new java.sql.Date(lopHoc.getLichhoc().getTime()));
-        statement.setFloat(3, lopHoc.getHocphi());
-        statement.setString(4, lopHoc.getMota());
-        statement.setString(5, lopHoc.getGiaSu().getIdGS());
-        statement.executeUpdate();
+        String query = "UPDATE LopHoc SET  ten_lop_hoc = ?, gio_hoc = ?, " +
+                "ngay_hoc = ?, hoc_phi = ?, phi_gia_su = ?, mo_ta = ?, hinh_anh = ? WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, lopHoc.getTenLopHoc());
+            statement.setString(2, lopHoc.getGioHoc());
+            statement.setDate(3, new java.sql.Date(lopHoc.getNgayHoc().getTime()));
+            statement.setInt(4, lopHoc.getHocPhi());
+            statement.setInt(5, lopHoc.getPhiGiaSu());
+            statement.setString(6, lopHoc.getMoTa());
+            statement.setString(7, lopHoc.getHinhAnh());
+            statement.setInt(8, lopHoc.getId());
+
+            statement.executeUpdate();
+        }
     }
-    public void delete(String idHS) throws SQLException {
-        String query = "DELETE FROM lophoc WHERE idLH = ?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, idHS);
-        statement.executeUpdate();
+
+    public void delete(int lopHocId) throws SQLException {
+        String query = "DELETE FROM LopHoc WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, lopHocId);
+            statement.executeUpdate();
+        }
     }
+
+    public LopHoc getById(int lopHocId) throws SQLException {
+        String query = "SELECT * FROM LopHoc WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, lopHocId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToLopHoc(resultSet);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public List<LopHoc> getAll() throws SQLException {
+        List<LopHoc> lopHocs = new ArrayList<>();
+
+        String query = "SELECT * FROM LopHoc";
+
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                LopHoc lopHoc = mapResultSetToLopHoc(resultSet);
+                lopHocs.add(lopHoc);
+            }
+        }
+
+        return lopHocs;
+    }
+
+    public List<LopHoc> getLopHocByGS(String usernameGS) throws SQLException {
+        List<LopHoc> lopHocs = new ArrayList<>();
+
+        String query = "SELECT * FROM LopHoc where username_gia_su = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1,usernameGS);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                LopHoc lopHoc = mapResultSetToLopHoc(resultSet);
+                lopHocs.add(lopHoc);
+            }
+        }
+
+        return lopHocs;
+    }
+
+    public int countLopHocByGiaSuUsername(String giaSuUsername) throws SQLException {
+        String query = "SELECT COUNT(*) FROM LopHoc WHERE username_gia_su = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, giaSuUsername);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+            }
+        }
+
+        return 0;
+    }
+
+
+    private LopHoc mapResultSetToLopHoc(ResultSet resultSet) throws SQLException {
+        int id = resultSet.getInt("id");
+        String usernameHocSinh = resultSet.getString("username_hoc_sinh");
+        String usernameGiaSu = resultSet.getString("username_gia_su");
+        String tenLopHoc = resultSet.getString("ten_lop_hoc");
+        String gioHoc = resultSet.getString("gio_hoc");
+        Date ngayHoc = resultSet.getDate("ngay_hoc");
+        int hocPhi = resultSet.getInt("hoc_phi");
+        int phiGiaSu = resultSet.getInt("phi_gia_su");
+        String moTa = resultSet.getString("mo_ta");
+        String hinhAnh = resultSet.getString("hinh_anh");
+
+        return new LopHoc(id, usernameHocSinh, usernameGiaSu, tenLopHoc, gioHoc, ngayHoc, hocPhi, phiGiaSu, moTa, hinhAnh);
+    }
+
 }

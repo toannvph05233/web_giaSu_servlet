@@ -127,11 +127,16 @@
 <div class="container emp-profile">
     <h1>Create Lớp Học.</h1>
     <form method="post">
-        <input placeholder="id" name="id" value="${lopHoc.idLH}"><br>
-        <input placeholder="name" name="name" value="${lopHoc.tenLH}"><br>
-        <input placeholder="date" name="date" type="date" value="${lopHoc.getDateFormat()}"><br>
-        <input placeholder="price" name="price" type="number" value="${lopHoc.hocphi}"><br>
-        <input placeholder="content" name="content" value="${lopHoc.mota}"><br>
+        <input placeholder="id" name="id" value="${lopHoc.id}" hidden="hidden"><br>
+        <input placeholder="name" name="name" value="${lopHoc.tenLopHoc}"><br>
+        <input placeholder="usernameHS" name="usernameHS" value="${lopHoc.usernameHocSinh}" hidden="hidden"><br>
+        <input placeholder="hour" name="hour" value="${lopHoc.gioHoc}"><br>
+        <input placeholder="date" name="date" type="date" value="${lopHoc.ngayHoc}"><br>
+        <input placeholder="price" name="price" value="${lopHoc.hocPhi}"><br>
+        <input placeholder="priceGS" name="priceGS" value="${lopHoc.phiGiaSu}"><br>
+        <input placeholder="content" name="content" value="${lopHoc.moTa}"><br>
+        <input placeholder="content" name="img" value="${lopHoc.hinhAnh}"><br>
+
         <button type="submit" class="btn btn-success">Submit</button>
     </form>
 

@@ -9,7 +9,7 @@ public class DBconnect {
     public DBconnect() {
         try {
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-            connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/web_gia_su", "root",
+            connection = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/giasuweb", "root",
                     "12345678");
             System.out.print("Ket noi thanh cong voi csdl");
         } catch (Exception e) {

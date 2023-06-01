@@ -1,82 +1,140 @@
 package com.web.Model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class LopHoc {
-    private String idLH;
-    private String tenLH;
-    private Date lichhoc;
-    private float hocphi;
-    private String mota;
-    private GiaSu giaSu;
+    private int id;
+    private String usernameHocSinh;
+    private String usernameGiaSu;
+    private String tenLopHoc;
+    private String gioHoc;
+    private Date ngayHoc;
+    private int hocPhi;
+    private int phiGiaSu;
+    private String moTa;
+    private String hinhAnh;
 
-
-    public LopHoc() {
+    public LopHoc(int id, String usernameHocSinh, String usernameGiaSu, String tenLopHoc, String gioHoc, Date ngayHoc,
+                  int hocPhi, int phiGiaSu, String moTa, String hinhAnh) {
+        this.id = id;
+        this.usernameHocSinh = usernameHocSinh;
+        this.usernameGiaSu = usernameGiaSu;
+        this.tenLopHoc = tenLopHoc;
+        this.gioHoc = gioHoc;
+        this.ngayHoc = ngayHoc;
+        this.hocPhi = hocPhi;
+        this.phiGiaSu = phiGiaSu;
+        this.moTa = moTa;
+        this.hinhAnh = hinhAnh;
     }
 
-    public LopHoc(String idLH, String tenLH, Date lichhoc, float hocphi, String mota, GiaSu giaSu) {
-        this.idLH = idLH;
-        this.tenLH = tenLH;
-        this.lichhoc = lichhoc;
-        this.hocphi = hocphi;
-        this.mota = mota;
-        this.giaSu = giaSu;
+    public LopHoc(int id, String usernameGiaSu, String tenLopHoc, String gioHoc, Date ngayHoc,
+                  int hocPhi, int phiGiaSu, String moTa, String hinhAnh) {
+        this.id = id;
+        this.usernameHocSinh = usernameHocSinh;
+        this.usernameGiaSu = usernameGiaSu;
+        this.tenLopHoc = tenLopHoc;
+        this.gioHoc = gioHoc;
+        this.ngayHoc = ngayHoc;
+        this.hocPhi = hocPhi;
+        this.phiGiaSu = phiGiaSu;
+        this.moTa = moTa;
+        this.hinhAnh = hinhAnh;
     }
 
-    public String getIdLH() {
-        return idLH;
+    public LopHoc(String usernameGiaSu, String tenLopHoc, String gioHoc, Date ngayHoc,
+                  int hocPhi, int phiGiaSu, String moTa, String hinhAnh) {
+        this.id = id;
+        this.usernameHocSinh = usernameHocSinh;
+        this.usernameGiaSu = usernameGiaSu;
+        this.tenLopHoc = tenLopHoc;
+        this.gioHoc = gioHoc;
+        this.ngayHoc = ngayHoc;
+        this.hocPhi = hocPhi;
+        this.phiGiaSu = phiGiaSu;
+        this.moTa = moTa;
+        this.hinhAnh = hinhAnh;
     }
 
-    public void setIdLH(String idLH) {
-        this.idLH = idLH;
+    // Getter và Setter cho các trường
+
+    public int getId() {
+        return id;
     }
 
-    public String getTenLH() {
-        return tenLH;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setTenLH(String tenLH) {
-        this.tenLH = tenLH;
+    public String getUsernameHocSinh() {
+        return usernameHocSinh;
     }
 
-    public Date getLichhoc() {
-        return lichhoc;
+    public void setUsernameHocSinh(String usernameHocSinh) {
+        this.usernameHocSinh = usernameHocSinh;
     }
 
-    public void setLichhoc(Date lichhoc) {
-        this.lichhoc = lichhoc;
+    public String getUsernameGiaSu() {
+        return usernameGiaSu;
     }
 
-    public float getHocphi() {
-        return hocphi;
+    public void setUsernameGiaSu(String usernameGiaSu) {
+        this.usernameGiaSu = usernameGiaSu;
     }
 
-    public void setHocphi(float hocphi) {
-        this.hocphi = hocphi;
+    public String getTenLopHoc() {
+        return tenLopHoc;
     }
 
-    public String getMota() {
-        return mota;
+    public void setTenLopHoc(String tenLopHoc) {
+        this.tenLopHoc = tenLopHoc;
     }
 
-    public void setMota(String mota) {
-        this.mota = mota;
+    public String getGioHoc() {
+        return gioHoc;
     }
 
-    public GiaSu getGiaSu() {
-        return giaSu;
+    public void setGioHoc(String gioHoc) {
+        this.gioHoc = gioHoc;
     }
 
-    public void setGiaSu(GiaSu giaSu) {
-        this.giaSu = giaSu;
+    public Date getNgayHoc() {
+        return ngayHoc;
     }
 
-    public String getDateFormat() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(lichhoc);
+    public void setNgayHoc(Date ngayHoc) {
+        this.ngayHoc = ngayHoc;
     }
 
-    public int countHV;
+    public int getHocPhi() {
+        return hocPhi;
+    }
+
+    public void setHocPhi(int hocPhi) {
+        this.hocPhi = hocPhi;
+    }
+
+    public int getPhiGiaSu() {
+        return phiGiaSu;
+    }
+
+    public void setPhiGiaSu(int phiGiaSu) {
+        this.phiGiaSu = phiGiaSu;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
+    public String getHinhAnh() {
+        return hinhAnh;
+    }
+
+    public void setHinhAnh(String hinhAnh) {
+        this.hinhAnh = hinhAnh;
+    }
 }

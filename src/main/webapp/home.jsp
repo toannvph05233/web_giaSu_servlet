@@ -201,9 +201,9 @@
     <%--    </div>--%>
 </div>
 <div style="height: 70px;"></div>
-<!-- Trung học phổ thông -->
+<!-- Gia sư -->
 <div class="container">
-    <h1 style="padding-left: 60px">Trung học phổ thông</h1>
+    <a></a><h1 style="padding-left: 60px" onclick="showAll(3)">Danh sách các gia sư.</h1></a>
     <hr>
     <br>
     <div class="row">
@@ -214,35 +214,37 @@
                       width="400"
                       height="400"></div>
         </div>
-        <c:forEach var="gs" items="${list3lv3}">
+        <c:forEach var="gs" items="${listGS3}">
             <div class="col 2 table_thpt_item" align="center">
-                <img src="${gs.img}" alt="" width="200" height="200">
-                <p><a href="profileGS?id=${gs.idGS}">Giáo Viên: ${gs.tenGS}</a></p>
-                <p1>${gs.monHoc.tenMH}</p1>
-                <p1>Số lớp học: ${gs.countLH}</p1>
+                <img src="${gs.hinhAnh}" alt="" width="200" height="200">
+                <p><a href="profileGS?username=${gs.username}">Giáo Viên: ${gs.tenGiaSu}</a></p>
+                <p1>Email: ${gs.email}</p1>
+                <p1>Số Lớp Học: ${gs.countLH}</p1>
+                <p1>Số Học Viên: ${gs.countHV}</p1>
             </div>
         </c:forEach>
     </div>
     <br>
     <br>
     <div class="row">
-        <c:forEach var="gs" items="${list4lv3}">
+        <c:forEach var="gs" items="${listGS5}">
             <c:set var="count" value="${5}" />
             <div class="col 3 table_thpt_item" align="center">
-                <img src="${gs.img}" alt="" width="200" height="200">
-                <p><a href="profileGS?id=${gs.idGS}">Giáo Viên: ${gs.tenGS}</a></p>
-                <p1>${gs.monHoc.tenMH}</p1>
-                <p1>Số lớp học: ${gs.countLH}</p1>
+                <img src="${gs.hinhAnh}" alt="" width="200" height="200">
+                <p><a href="profileGS?username=${gs.username}">Giáo Viên: ${gs.tenGiaSu}</a></p>
+                <p1>Email: ${gs.email}</p1>
+                <p1>Số Lớp Học: ${gs.countLH}</p1>
+                <p1>Số Học Viên: ${gs.countHV}</p1>
             </div>
         </c:forEach>
 
     </div>
 
 </div>
-<!-- Trung học cơ sở -->
+<!-- Lớp Học -->
 <div style="height: 60px;"></div>
 <div class="container">
-    <h1 style="padding-left: 60px">Trung học cơ sở</h1>
+    <h1 style="padding-left: 60px">Danh Sách Lớp Học</h1>
     <hr>
     <br>
     <div class="row">
@@ -253,66 +255,32 @@
                       width="400"
                       height="400"></div>
         </div>
-        <c:forEach var="gs" items="${list3lv2}">
-            <div class="col 2 table_thpt_item" align="center">
-                <img src="${gs.img}" alt="" width="200" height="200">
-                <p><a href="profileGS?id=${gs.idGS}">Giáo Viên: ${gs.tenGS}</a></p>
-                <p1>${gs.monHoc.tenMH}</p1>
-                <p1>Số lớp học: ${gs.countLH}</p1>
+        <c:forEach var="lh" items="${listLH3}">
+            <div class="col 2 table_thpt_item" align="center" onclick="profileLopHoc(${lh.id})">
+                <img src="${lh.hinhAnh}" alt="" width="200" height="200">
+                <p><a href="profileGS?username=${lh.usernameGiaSu}">Giáo Viên: ${lh.usernameGiaSu}</a></p>
+                <p1>${lh.tenLopHoc}</p1>
+                <p>${lh.ngayHoc} - ${lh.hocPhi}$</p>
             </div>
         </c:forEach>
     </div>
     <br>
     <br>
     <div class="row">
-        <c:forEach var="gs" items="${list4lv2}">
-            <div class="col 3 table_thpt_item" align="center">
-                <img src="${gs.img}" alt="" width="200" height="200">
-                <p><a href="profileGS?id=${gs.idGS}">Giáo Viên: ${gs.tenGS}</a></p>
-                <p1>${gs.monHoc.tenMH}</p1>
-                <p1>Số lớp học: ${gs.countLH}</p1>
-            </div>
-        </c:forEach>
-    </div>
-
-</div>
-<!-- tiểu học -->
-<div style="height: 60px;"></div>
-<div class="container">
-    <h1 style="padding-left: 60px">Tiểu học</h1>
-    <hr>
-    <br>
-    <div class="row">
-        <div colspan="6">
-            <div><img class="images_thpt" src="https://images2.thanhnien.vn/Uploaded/duyphuc/2021_11_06/3-1216.jpeg"
-                      alt=""
-                      width="400"
-                      height="400"></div>
-        </div>
-        <c:forEach var="gs" items="${list3lv1}">
-            <div class="col 2 table_thpt_item" align="center">
-                <img src="${gs.img}" alt="" width="200" height="200">
-                <p><a href="profileGS?id=${gs.idGS}">Giáo Viên: ${gs.tenGS}</a></p>
-                <p1>${gs.monHoc.tenMH}</p1>
-                <p1>Số lớp học: ${gs.countLH}</p1>
-            </div>
-        </c:forEach>
-    </div>
-    <br>
-    <br>
-    <div class="row">
-        <c:forEach var="gs" items="${list4lv1}">
-            <div class="col 3 table_thpt_item" align="center">
-                <img src="${gs.img}" alt="" width="200" height="200">
-                <p><a href="profileGS?id=${gs.idGS}">Giáo Viên: ${gs.tenGS}</a></p>
-                <p1>${gs.monHoc.tenMH}</p1>
-                <p1>Số lớp học: ${gs.countLH}</p1>
+        <c:forEach var="lh" items="${listLH4}">
+            <c:set var="count" value="${5}" />
+            <div class="col 3 table_thpt_item" align="center" onclick="profileLopHoc(${lh.id})">
+                <img src="${lh.hinhAnh}" alt="" width="200" height="200">
+                <p><a href="profileGS?username=${lh.usernameGiaSu}">Giáo Viên: ${lh.usernameGiaSu}</a></p>
+                <p1>${lh.tenLopHoc}</p1>
+                <p>${lh.ngayHoc} - ${lh.hocPhi}$</p>
             </div>
         </c:forEach>
 
     </div>
 
 </div>
+
 <div class="footer">
     <div class="wrapper-ft ">
         <div class="content-top">
@@ -424,3 +392,16 @@
 </body>
 
 </html>
+
+<script>
+    function showAll(lever) {
+            location.href = "/showAllLop?lever=" + lever;
+
+    }
+    function profileLopHoc(id) {
+        location.href = "/profileLH?id=" + id;
+
+    }
+
+
+</script>
