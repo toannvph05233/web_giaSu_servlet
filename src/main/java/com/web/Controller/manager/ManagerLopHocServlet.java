@@ -97,14 +97,19 @@ public class ManagerLopHocServlet extends HttpServlet {
 
     public void showLopHoc(HttpServletRequest req, HttpServletResponse resp, Account account) {
         try {
+
+            String lever = req.getParameter("lever");
+            if (lever == null) {
+                lever = "1";
+            }
             req.setAttribute("account", account);
             if (account.getRole().equals("admin")) {
-                req.setAttribute("lopHocs", lopHocService.getAlllopHocs());
+                req.setAttribute("lopHocs", lopHocService.getLopHocByLever(Integer.parseInt(lever)));
                 RequestDispatcher dispatcher = req.getRequestDispatcher("/lopHoc/show.jsp");
                 dispatcher.forward(req, resp);
             } else {
                 if (account.getRole().equals("gv")) {
-                    req.setAttribute("lopHocs", lopHocService.getlopHocByUsernameGS(account.getUsername()));
+                    req.setAttribute("lopHocs", lopHocService.getLopHocByGSAndLever(account.getUsername(), Integer.parseInt(lever)));
                     RequestDispatcher dispatcher = req.getRequestDispatcher("/lopHoc/show.jsp");
                     dispatcher.forward(req, resp);
                 }

@@ -22,35 +22,42 @@ public class HomeServelet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<LopHoc> listLH3 = new ArrayList<>();
-        List<LopHoc> listLH4 = new ArrayList<>();
-        List<LopHoc> lopHocsLv1 = lopHocService.getAlllopHocs();
-        for (int i = 0; i < lopHocsLv1.size(); i++) {
+        List<LopHoc> list3lv3 = new ArrayList<>();
+        List<LopHoc> list4lv3 = new ArrayList<>();
+        List<LopHoc> lopHoclv3 = lopHocService.getLopHocByLever(3);
+        for (int i = 0; i < lopHoclv3.size(); i++) {
             if (i < 3) {
-                listLH3.add(lopHocsLv1.get(i));
+                list3lv3.add(lopHoclv3.get(i));
             } else if (i < 7) {
-                listLH4.add(lopHocsLv1.get(i));
-            }
-        }
-        req.setAttribute("listLH3", listLH3);
-        req.setAttribute("listLH4", listLH4);
-
-        List<GiaSu> listGS3 = new ArrayList<>();
-        List<GiaSu> listGS4 = new ArrayList<>();
-        List<GiaSu> giaSuList = giaSuService.getAllGiaSus();
-        for (int i = 0; i < giaSuList.size(); i++) {
-            giaSuList.get(i).setCountHV(lopHocService.countHocSinhInGS(giaSuList.get(i).getUsername()));
-            giaSuList.get(i).setCountLH(giaSuService.countHocSinhByGiaSuUsername(giaSuList.get(i).getUsername()));
-            if (i < 3) {
-                listGS3.add(giaSuList.get(i));
-            } else if (i < 7) {
-                listGS4.add(giaSuList.get(i));
+                list4lv3.add(lopHoclv3.get(i));
             }
         }
 
+        List<LopHoc> list3lv2 = new ArrayList<>();
+        List<LopHoc> list4lv2 = new ArrayList<>();
+        List<LopHoc> lopHoclv2 = lopHocService.getLopHocByLever(2);
+        for (int i = 0; i < lopHoclv2.size(); i++) {
+            if (i < 3) {
+                list3lv2.add(lopHoclv2.get(i));
+            } else if (i < 7)
+                list4lv2.add(lopHoclv2.get(i));
+        }
 
-        req.setAttribute("listGS3", listGS3);
-        req.setAttribute("listGS4", listGS4);
+        List<LopHoc> list3lv1 = new ArrayList<>();
+        List<LopHoc> list4lv1 = new ArrayList<>();
+        List<LopHoc> lopHoclv1 = lopHocService.getLopHocByLever(1);
+        for (int i = 0; i < lopHoclv1.size(); i++) {
+            if (i < 3) {
+                list3lv1.add(lopHoclv1.get(i));
+            } else if (i < 7)
+                list4lv1.add(lopHoclv1.get(i));
+        }
+        req.setAttribute("list3lv3", list3lv3);
+        req.setAttribute("list4lv3", list4lv3);
+        req.setAttribute("list3lv2", list3lv2);
+        req.setAttribute("list4lv2", list4lv2);
+        req.setAttribute("list3lv1", list3lv1);
+        req.setAttribute("list4lv1", list4lv1);
         RequestDispatcher dispatcher = req.getRequestDispatcher("/home.jsp");
         dispatcher.forward(req, resp);
     }

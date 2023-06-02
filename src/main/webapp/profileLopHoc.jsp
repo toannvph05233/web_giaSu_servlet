@@ -89,7 +89,7 @@
                     <span class="dong">$</span>
                 </div>
                 <div class="text-center">
-                    <span> Đã có ${lopHoc.usernameHocSinh} là học viên</span>
+                    <span> Người học : ${lopHoc.usernameHocSinh != null ? lopHoc.usernameHocSinh: 0} </span>
                 </div>
                 <div class="btn-display">
                     <a class="backgroud-btn1" href="">Đăng ký ngay</a>

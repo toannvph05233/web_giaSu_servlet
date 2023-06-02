@@ -141,10 +141,16 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="/managerLopHoc">Lớp học</a>
+            <a class="nav-link active" data-toggle="tab" href="/managerLopHoc?lever=1">Tiểu Học</a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="/managerLopHoc?lever=2">Trung Học</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="/managerLopHoc?lever=3">Trung Học Phổ Thông</a>
+        </li>
     </ul>
+
 
     <!-- Tab panes -->
     <div class="tab-content">
@@ -159,6 +165,7 @@
                 <th>Content</th>
                 <th>Img</th>
                 <th>Name GS</th>
+                <th>Accept</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -174,6 +181,13 @@
                     <td>${lh.moTa}</td>
                     <td><img src="${lh.hinhAnh}" width="200" height="170"></td>
                     <td>${lh.usernameGiaSu}</td>
+                    <c:if test="${lh.accept == 1}">
+                        <td><a href="#" type="button" class="btn btn-success">Đã Accept</a></td>
+                    </c:if>
+                    <c:if test="${lh.accept == 0}">
+                        <td><a href="#" type="button" class="btn btn-warning">Chưa Accept</a></td>
+                    </c:if>
+
                     <td><a href="/managerLopHoc?action=edit&id=${lh.id}" type="button"
                            class="btn btn-warning">Edit</a></td>
                     <td><a onclick="deleteLH(${lh.id})" type="button"
@@ -202,5 +216,28 @@
             location.href = "/managerLopHoc?action=delete&id=" + idLH;
         }
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy giá trị của tham số 'lever' từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        let leverParam = urlParams.get('lever');
+        if (leverParam == null) {
+            leverParam = "1";
+        }
+        // Lặp qua tất cả các thẻ 'a' trong danh sách và kiểm tra giá trị của 'href'
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach((link) => {
+            const href = link.getAttribute('href');
+            // Kiểm tra nếu giá trị 'href' chứa giá trị của 'lever' trong tham số
+            if (href.includes(leverParam)) {
+                // Xóa lớp 'active' cho tất cả các thẻ 'a'
+                navLinks.forEach((link) => {
+                    link.classList.remove('active');
+                });
+                // Đặt active cho thẻ 'a' tương ứng
+                link.classList.add('active');
+            }
+        });
+    });
 
 </script>

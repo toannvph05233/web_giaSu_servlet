@@ -14,8 +14,8 @@ import java.sql.Statement;
 
 public class LopHocDAO extends DBconnect{
     public void create(LopHoc lopHoc) throws SQLException {
-        String query = "INSERT INTO LopHoc (username_hoc_sinh, username_gia_su, ten_lop_hoc, gio_hoc, ngay_hoc, hoc_phi, phi_gia_su, mo_ta, hinh_anh) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO LopHoc (username_hoc_sinh, username_gia_su, ten_lop_hoc, gio_hoc, ngay_hoc, hoc_phi, phi_gia_su, mo_ta, hinh_anh,lever) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
         try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, lopHoc.getUsernameHocSinh());
@@ -27,6 +27,7 @@ public class LopHocDAO extends DBconnect{
             statement.setInt(7, lopHoc.getPhiGiaSu());
             statement.setString(8, lopHoc.getMoTa());
             statement.setString(9, lopHoc.getHinhAnh());
+            statement.setInt(10, lopHoc.getLever());
 
             statement.executeUpdate();
 
@@ -40,7 +41,7 @@ public class LopHocDAO extends DBconnect{
 
     public void update(LopHoc lopHoc) throws SQLException {
         String query = "UPDATE LopHoc SET  ten_lop_hoc = ?, gio_hoc = ?, " +
-                "ngay_hoc = ?, hoc_phi = ?, phi_gia_su = ?, mo_ta = ?, hinh_anh = ? WHERE id = ?";
+                "ngay_hoc = ?, hoc_phi = ?, phi_gia_su = ?, mo_ta = ?, hinh_anh = ?, lever = ? WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, lopHoc.getTenLopHoc());
@@ -50,7 +51,8 @@ public class LopHocDAO extends DBconnect{
             statement.setInt(5, lopHoc.getPhiGiaSu());
             statement.setString(6, lopHoc.getMoTa());
             statement.setString(7, lopHoc.getHinhAnh());
-            statement.setInt(8, lopHoc.getId());
+            statement.setInt(8, lopHoc.getLever());
+            statement.setInt(9, lopHoc.getId());
 
             statement.executeUpdate();
         }
@@ -113,6 +115,40 @@ public class LopHocDAO extends DBconnect{
         return lopHocs;
     }
 
+    public List<LopHoc> getLopHocByGSAndLever(String usernameGS, int lever) throws SQLException {
+        List<LopHoc> lopHocs = new ArrayList<>();
+
+        String query = "SELECT * FROM LopHoc where username_gia_su = ? and lever = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1,usernameGS);
+            statement.setInt(2,lever);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                LopHoc lopHoc = mapResultSetToLopHoc(resultSet);
+                lopHocs.add(lopHoc);
+            }
+        }
+
+        return lopHocs;
+    }
+
+
+    public List<LopHoc> getLopHocByLever(int lever) throws SQLException {
+        List<LopHoc> lopHocs = new ArrayList<>();
+
+        String query = "SELECT * FROM LopHoc where lever = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1,lever);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                LopHoc lopHoc = mapResultSetToLopHoc(resultSet);
+                lopHocs.add(lopHoc);
+            }
+        }
+
+        return lopHocs;
+    }
+
     public int countLopHocByGiaSuUsername(String giaSuUsername) throws SQLException {
         String query = "SELECT COUNT(*) FROM LopHoc WHERE username_gia_su = ?";
 
@@ -139,10 +175,12 @@ public class LopHocDAO extends DBconnect{
         Date ngayHoc = resultSet.getDate("ngay_hoc");
         int hocPhi = resultSet.getInt("hoc_phi");
         int phiGiaSu = resultSet.getInt("phi_gia_su");
+        int accept = resultSet.getInt("accept");
+        int lever = resultSet.getInt("lever");
         String moTa = resultSet.getString("mo_ta");
         String hinhAnh = resultSet.getString("hinh_anh");
 
-        return new LopHoc(id, usernameHocSinh, usernameGiaSu, tenLopHoc, gioHoc, ngayHoc, hocPhi, phiGiaSu, moTa, hinhAnh);
+        return new LopHoc(id, usernameHocSinh, usernameGiaSu, tenLopHoc, gioHoc, ngayHoc, hocPhi, phiGiaSu, moTa, hinhAnh, accept, lever);
     }
 
 }
