@@ -19,12 +19,15 @@ import java.text.SimpleDateFormat;
 @WebServlet(urlPatterns = "/managerLopHoc")
 public class ManagerLopHocServlet extends HttpServlet {
     LopHocService lopHocService = new LopHocService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Account account = (Account) session.getAttribute("account");
         String action = req.getParameter("action");
         RequestDispatcher dispatcher = null;
+        String idLH = req.getParameter("id");
+
         if (action == null) {
             action = "";
         }
@@ -33,13 +36,19 @@ public class ManagerLopHocServlet extends HttpServlet {
                 dispatcher = req.getRequestDispatcher("/lopHoc/create.jsp");
                 break;
             case "edit":
-                String idL = req.getParameter("id");
-                req.setAttribute("lopHoc", lopHocService.getlopHocById(idL));
+                req.setAttribute("lopHoc", lopHocService.getlopHocById(idLH));
                 dispatcher = req.getRequestDispatcher("/lopHoc/edit.jsp");
                 break;
             case "delete":
-                String idLH = req.getParameter("id");
                 lopHocService.deletelopHoc(idLH);
+                resp.sendRedirect("/managerLopHoc");
+                return;
+            case "accept":
+                lopHocService.acceptLopHoc(1, Integer.parseInt(idLH));
+                resp.sendRedirect("/managerLopHoc");
+                return;
+            case "unAccept":
+                lopHocService.acceptLopHoc(0, Integer.parseInt(idLH));
                 resp.sendRedirect("/managerLopHoc");
                 return;
             default:
@@ -62,6 +71,7 @@ public class ManagerLopHocServlet extends HttpServlet {
             }
             String id = req.getParameter("id");
             String hour = req.getParameter("hour");
+            int lever = Integer.parseInt(req.getParameter("lever"));
             String name = req.getParameter("name");
             String usernameHS = req.getParameter("usernameHS");
             String date = req.getParameter("date");
@@ -74,9 +84,9 @@ public class ManagerLopHocServlet extends HttpServlet {
             int idLH = 0;
             if (id != null) {
                 idLH = Integer.parseInt(id);
-                lopHoc = new LopHoc(idLH, usernameHS, account.getUsername(), name, hour, dateFormat.parse(date), price, priceGS, content, img);
+                lopHoc = new LopHoc(idLH, usernameHS, account.getUsername(), name, hour, dateFormat.parse(date), price, priceGS, content, img, 0, lever);
             } else {
-                lopHoc = new LopHoc(account.getUsername(), name, hour, dateFormat.parse(date), price, priceGS, content, img);
+                lopHoc = new LopHoc(account.getUsername(), name, hour, dateFormat.parse(date), price, priceGS, content, img, 0, lever);
             }
 
 
@@ -104,7 +114,7 @@ public class ManagerLopHocServlet extends HttpServlet {
             }
             req.setAttribute("account", account);
             if (account.getRole().equals("admin")) {
-                req.setAttribute("lopHocs", lopHocService.getLopHocByLever(Integer.parseInt(lever)));
+                req.setAttribute("lopHocs", lopHocService.getLopHocByLever(Integer.parseInt(lever), true));
                 RequestDispatcher dispatcher = req.getRequestDispatcher("/lopHoc/show.jsp");
                 dispatcher.forward(req, resp);
             } else {

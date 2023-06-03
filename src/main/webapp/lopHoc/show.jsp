@@ -181,15 +181,30 @@
                     <td>${lh.moTa}</td>
                     <td><img src="${lh.hinhAnh}" width="200" height="170"></td>
                     <td>${lh.usernameGiaSu}</td>
-                    <c:if test="${lh.accept == 1}">
-                        <td><a href="#" type="button" class="btn btn-success">Đã Accept</a></td>
+                    <c:if test="${account.role == 'admin'}">
+                        <c:if test="${lh.accept == 1}">
+                            <td><a href="/managerLopHoc?action=unAccept&id=${lh.id}" type="button"
+                                   class="btn btn-success">Đã Accept</a></td>
+                        </c:if>
+                        <c:if test="${lh.accept == 0}">
+                            <td><a href="/managerLopHoc?action=accept&id=${lh.id}" type="button"
+                                   class="btn btn-warning">Chưa Accept</a></td>
+                        </c:if>
                     </c:if>
-                    <c:if test="${lh.accept == 0}">
-                        <td><a href="#" type="button" class="btn btn-warning">Chưa Accept</a></td>
+
+                    <c:if test="${account.role == 'gv'}">
+                        <c:if test="${lh.accept == 1}">
+                            <td><a href="#" type="button"
+                                   class="btn btn-success">Đã Accept</a></td>
+                        </c:if>
+                        <c:if test="${lh.accept == 0}">
+                            <td><a href="#" type="button"
+                                   class="btn btn-warning">Chưa Accept</a></td>
+                        </c:if>
                     </c:if>
 
                     <td><a href="/managerLopHoc?action=edit&id=${lh.id}" type="button"
-                           class="btn btn-warning">Edit</a></td>
+                           class="btn btn-secondary">Edit</a></td>
                     <td><a onclick="deleteLH(${lh.id})" type="button"
                            class="btn btn-danger">Delete</a>
                     </td>

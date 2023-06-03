@@ -131,6 +131,11 @@
         <input placeholder="name" name="name" value="${lopHoc.tenLopHoc}"><br>
         <input placeholder="usernameHS" name="usernameHS" value="${lopHoc.usernameHocSinh}" hidden="hidden"><br>
         <input placeholder="hour" name="hour" value="${lopHoc.gioHoc}"><br>
+        <select name="lever" value="${lopHoc.lever}">
+            <option value="1">Cấp 1</option>
+            <option value="2">Cấp 2</option>
+            <option value="3">Cấp 3</option>
+        </select>
         <input placeholder="date" name="date" type="date" value="${lopHoc.ngayHoc}"><br>
         <input placeholder="price" name="price" value="${lopHoc.hocPhi}"><br>
         <input placeholder="priceGS" name="priceGS" value="${lopHoc.phiGiaSu}"><br>

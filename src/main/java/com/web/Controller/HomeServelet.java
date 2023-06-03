@@ -24,7 +24,7 @@ public class HomeServelet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<LopHoc> list3lv3 = new ArrayList<>();
         List<LopHoc> list4lv3 = new ArrayList<>();
-        List<LopHoc> lopHoclv3 = lopHocService.getLopHocByLever(3);
+        List<LopHoc> lopHoclv3 = lopHocService.getLopHocByLever(3, false);
         for (int i = 0; i < lopHoclv3.size(); i++) {
             if (i < 3) {
                 list3lv3.add(lopHoclv3.get(i));
@@ -35,7 +35,7 @@ public class HomeServelet extends HttpServlet {
 
         List<LopHoc> list3lv2 = new ArrayList<>();
         List<LopHoc> list4lv2 = new ArrayList<>();
-        List<LopHoc> lopHoclv2 = lopHocService.getLopHocByLever(2);
+        List<LopHoc> lopHoclv2 = lopHocService.getLopHocByLever(2, false);
         for (int i = 0; i < lopHoclv2.size(); i++) {
             if (i < 3) {
                 list3lv2.add(lopHoclv2.get(i));
@@ -45,7 +45,7 @@ public class HomeServelet extends HttpServlet {
 
         List<LopHoc> list3lv1 = new ArrayList<>();
         List<LopHoc> list4lv1 = new ArrayList<>();
-        List<LopHoc> lopHoclv1 = lopHocService.getLopHocByLever(1);
+        List<LopHoc> lopHoclv1 = lopHocService.getLopHocByLever(1, false);
         for (int i = 0; i < lopHoclv1.size(); i++) {
             if (i < 3) {
                 list3lv1.add(lopHoclv1.get(i));

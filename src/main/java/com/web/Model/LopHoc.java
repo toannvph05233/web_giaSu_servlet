@@ -72,9 +72,7 @@ public class LopHoc {
     }
 
     public LopHoc(String usernameGiaSu, String tenLopHoc, String gioHoc, Date ngayHoc,
-                  int hocPhi, int phiGiaSu, String moTa, String hinhAnh) {
-        this.id = id;
-        this.usernameHocSinh = usernameHocSinh;
+                  int hocPhi, int phiGiaSu, String moTa, String hinhAnh,  int accept, int lever) {
         this.usernameGiaSu = usernameGiaSu;
         this.tenLopHoc = tenLopHoc;
         this.gioHoc = gioHoc;
@@ -83,6 +81,8 @@ public class LopHoc {
         this.phiGiaSu = phiGiaSu;
         this.moTa = moTa;
         this.hinhAnh = hinhAnh;
+        this.lever = lever;
+        this.accept = accept;
     }
 
     // Getter và Setter cho các trường

@@ -54,9 +54,9 @@ public class LopHocService {
         }
         return null;
     }
-    public List<LopHoc> getLopHocByLever(int lever) {
+    public List<LopHoc> getLopHocByLever(int lever, boolean isAdmin) {
         try {
-            List<LopHoc> lopHocs = lopHocDAO.getLopHocByLever(lever);
+            List<LopHoc> lopHocs = lopHocDAO.getLopHocByLever(lever, isAdmin);
             return lopHocs;
         } catch (SQLException e) {
             System.out.println("Lỗi khi truy vấn danh sách học sinh: " + e.getMessage());
@@ -82,6 +82,14 @@ public class LopHocService {
             System.out.println("Lỗi khi cập nhật học sinh: " + e.getMessage());
         }
     }
+    public void acceptLopHoc(int accept, int lopHocId) {
+        try {
+            lopHocDAO.acceptLopHoc(accept,lopHocId);
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi cập nhật : " + e.getMessage());
+        }
+    }
+
 
     public int countHocSinhInGS(String giaSuUsername) {
         try {

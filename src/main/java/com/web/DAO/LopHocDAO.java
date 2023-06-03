@@ -66,6 +66,15 @@ public class LopHocDAO extends DBconnect{
             statement.executeUpdate();
         }
     }
+    public void acceptLopHoc(int accept, int lopHocId) throws SQLException {
+        String query = "UPDATE LopHoc SET  accept = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, accept);
+            statement.setInt(2, lopHocId);
+            statement.executeUpdate();
+        }
+    }
+
 
     public LopHoc getById(int lopHocId) throws SQLException {
         String query = "SELECT * FROM LopHoc WHERE id = ?";
@@ -86,7 +95,7 @@ public class LopHocDAO extends DBconnect{
     public List<LopHoc> getAll() throws SQLException {
         List<LopHoc> lopHocs = new ArrayList<>();
 
-        String query = "SELECT * FROM LopHoc";
+        String query = "SELECT * FROM LopHoc where accept = 1";
 
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
@@ -133,10 +142,14 @@ public class LopHocDAO extends DBconnect{
     }
 
 
-    public List<LopHoc> getLopHocByLever(int lever) throws SQLException {
+    public List<LopHoc> getLopHocByLever(int lever, boolean isAdmin) throws SQLException {
         List<LopHoc> lopHocs = new ArrayList<>();
-
-        String query = "SELECT * FROM LopHoc where lever = ?";
+        String query;
+        if (isAdmin){
+            query = "SELECT * FROM LopHoc where lever = ?";
+        }else {
+            query = "SELECT * FROM LopHoc where lever = ? and accept = 1";
+        }
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1,lever);
             ResultSet resultSet = statement.executeQuery();
